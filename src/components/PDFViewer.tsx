@@ -28,10 +28,12 @@ export function PDFViewer({ title, content }: PDFViewerProps) {
             const splitText = doc.splitTextToSize(content, 170);
 
             let y = 30;
+            let pageCount = 1;
             // Add text page by page
             for (let i = 0; i < splitText.length; i++) {
                 if (y > 280) {
                     doc.addPage();
+                    pageCount++;
                     y = 20;
                 }
                 doc.text(splitText[i], 20, y);
@@ -39,7 +41,6 @@ export function PDFViewer({ title, content }: PDFViewerProps) {
             }
 
             // Footer
-            const pageCount = doc.getNumberOfPages();
             for (let i = 1; i <= pageCount; i++) {
                 doc.setPage(i);
                 doc.setFontSize(10);

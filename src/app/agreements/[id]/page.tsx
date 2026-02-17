@@ -3,11 +3,7 @@ import { sql } from '@/lib/db';
 import { Agreement, Analysis } from '@/lib/types';
 import { RadarChart } from '@/components/RadarChart';
 import { Header } from '@/components/Header';
-import dynamicModule from 'next/dynamic';
-const PDFViewer = dynamicModule(() => import('@/components/PDFViewer').then(mod => mod.PDFViewer), {
-    ssr: false,
-    loading: () => <div className="h-96 w-full flex items-center justify-center bg-slate-50 text-slate-400">Loading PDF View...</div>
-});
+import { PDFViewerLoader } from '@/components/PDFViewerLoader';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -71,7 +67,7 @@ export default async function AgreementPage(props: { params: Promise<{ id: strin
 
                             <h3 className="font-sans font-bold text-sm uppercase tracking-widest text-slate-400 mb-4 mt-8">Full Text (PDF View)</h3>
                             <div className="bg-white p-1 border border-gray-100 shadow-sm">
-                                <PDFViewer title={agreement.name} content={agreement.full_text || "Full text not available."} />
+                                <PDFViewerLoader title={agreement.name} content={agreement.full_text || "Full text not available."} />
                             </div>
                         </div>
                     </div>
