@@ -3,6 +3,7 @@ import { sql } from '@/lib/db';
 import { Agreement, Analysis } from '@/lib/types';
 import { RadarChart } from '@/components/RadarChart';
 import { Header } from '@/components/Header';
+import { PDFViewer } from '@/components/PDFViewer';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -64,9 +65,9 @@ export default async function AgreementPage(props: { params: Promise<{ id: strin
                                 {agreement.summary}
                             </p>
 
-                            <h3 className="font-sans font-bold text-sm uppercase tracking-widest text-slate-400 mb-4 mt-8">Full Text Excerpt</h3>
-                            <div className="bg-white p-8 border border-gray-100 shadow-sm font-light text-slate-800 whitespace-pre-wrap">
-                                {agreement.full_text || "Full text not available in archive."}
+                            <h3 className="font-sans font-bold text-sm uppercase tracking-widest text-slate-400 mb-4 mt-8">Full Text (PDF View)</h3>
+                            <div className="bg-white p-1 border border-gray-100 shadow-sm">
+                                <PDFViewer title={agreement.name} content={agreement.full_text || "Full text not available."} />
                             </div>
                         </div>
                     </div>

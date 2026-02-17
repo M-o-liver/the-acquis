@@ -529,7 +529,7 @@ async function seed() {
         for (const agreement of agreements) {
             await sql`
         INSERT INTO agreements (name, year, category, signatories, summary, full_text)
-        VALUES (${agreement.name}, ${agreement.year}, ${agreement.category}, ${agreement.signatories}, ${agreement.summary}, ${agreement.full_text})
+        VALUES (${agreement.name}, ${agreement.year}, ${agreement.category}, ${agreement.signatories as any}, ${agreement.summary}, ${agreement.full_text})
       `;
         }
 
