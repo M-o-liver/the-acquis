@@ -3,7 +3,11 @@ import { sql } from '@/lib/db';
 import { Agreement, Analysis } from '@/lib/types';
 import { RadarChart } from '@/components/RadarChart';
 import { Header } from '@/components/Header';
-import { PDFViewer } from '@/components/PDFViewer';
+import dynamicModule from 'next/dynamic';
+const PDFViewer = dynamicModule(() => import('@/components/PDFViewer').then(mod => mod.PDFViewer), {
+    ssr: false,
+    loading: () => <div className="h-96 w-full flex items-center justify-center bg-slate-50 text-slate-400">Loading PDF View...</div>
+});
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 

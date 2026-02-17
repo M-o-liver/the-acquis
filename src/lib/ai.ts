@@ -2,12 +2,11 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Analysis } from "./types";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
-
 export async function analyzeAgreement(text: string): Promise<Omit<Analysis, "id" | "agreement_id">> {
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
     const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-pro",
-        generationConfig: { responseMimeType: "application/json" } // Force JSON mode
+        model: "gemini-1.5-flash",
+        generationConfig: { responseMimeType: "application/json" }
     });
 
     const prompt = `You are a Senior Policy Analyst for the European Commission. Analyze the following international agreement text. 
@@ -21,9 +20,9 @@ export async function analyzeAgreement(text: string): Promise<Omit<Analysis, "id
 
     Rubric:
     sovereignty_score: 100 = Absolute state sovereignty; 0 = Supranational authority.
-    binding_score: 100 = Hard law/Binding; 0 = Soft law/Aspirational.
+    binding_score: 100 = Binding/Hard law; 0 = Board/Soft law.
     human_centricity_score: 100 = Rights of individuals; 0 = State interests.
-    economic_weight: 100 = Major market impact; 0 = Diplomatic/Symbolic.
+    economic_weight: 100 = Major market impact; 0 = Symbolic.
 
     Text: ${text.substring(0, 15000)}`;
 
@@ -32,7 +31,6 @@ export async function analyzeAgreement(text: string): Promise<Omit<Analysis, "id
         const response = await result.response;
         const textResponse = response.text();
 
-        // Robust JSON parsing
         const jsonMatch = textResponse.match(/\{[\s\S]*\}/);
         const cleanJson = jsonMatch ? jsonMatch[0] : textResponse;
 
